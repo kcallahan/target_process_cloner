@@ -23,6 +23,10 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+gem 'target_process', :git => "https://github.com/yltsrc/targetprocess-ruby.git"
+
+gem 'activeresource'
+
 gem 'rspec-rails'
 
 # Use ActiveModel has_secure_password

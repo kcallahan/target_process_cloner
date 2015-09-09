@@ -1,0 +1,19 @@
+<h1>Which Project to Clone?</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @remote_projects.each do |remote_project| %>
+    <tr>
+      <td>
+        <%= link_to remote_project.name, remote_project_path(remote_project) %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
