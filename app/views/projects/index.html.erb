@@ -11,7 +11,7 @@
     <% @remote_projects.each do |remote_project| %>
     <tr>
       <td>
-        <%= link_to remote_project.name, remote_project_path(remote_project) %>
+        <%= link_to remote_project.name, new_project_path({source_remote_id: remote_project.id}) %>
       </td>
     </tr>
     <% end %>

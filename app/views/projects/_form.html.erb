@@ -13,6 +13,7 @@
 
   <%= f.label :name, "New Project Name: " %>
   <%= f.text_field :name %>
+  <%= hidden_field :project, :source_remote_id, :value => @remote_project.id %>
 
   <div class="actions">
     <%= f.submit "Clone Project" %>

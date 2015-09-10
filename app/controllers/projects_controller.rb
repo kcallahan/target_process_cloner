@@ -1,23 +1,29 @@
 class ProjectsController < ApplicationController
+  require 'target_process_utilities'
+  include TargetProcessUtilities
+
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
   def index
-    @remote_projects = map_and_save_remote_projects
+    @remote_projects = map_remote_projects_to_local_objects
     @projects = Project.all
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @remote_project = RemoteProject.find_by_id(params[:id])
-    @project = Project.create(source_remote_id: params[:id], owner: @remote_project.owner)
+    @project = Project.find(params[:id])
   end
 
   # GET /projects/new
   def new
     @project = Project.new
+    
+    @remote_project = map_remote_project_to_local_object(params[:source_remote_id])
+
+    render :edit
   end
 
   # GET /projects/1/edit
@@ -27,12 +33,14 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
+    @remote_project = map_remote_project_to_local_object(project_params[:source_remote_id])
     @project = Project.new(project_params)
+    @project.owner = @remote_project.owner
 
     respond_to do |format|
       if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
+        format.html { redirect_to projects_url, notice: 'Project was successfully created.' }
+        format.json { render :index, status: :created, location: @project }
       else
         format.html { render :new }
         format.json { render json: @project.errors, status: :unprocessable_entity }
@@ -74,20 +82,4 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:project).permit(:name, :owner, :source_remote_id)
     end
-
-  def map_and_save_remote_projects
-    remote_projects = Array.new()
-  
-    TargetProcess::Project.all().each do |remote_project|
-      project = RemoteProject.find_or_create_by(id: remote_project.id)
-      project.name = remote_project.name
-      project.owner = remote_project.owner[:id]
-      project.save
-
-      remote_projects.push project
-    end
-
-    remote_projects 
-  end
-
 end
