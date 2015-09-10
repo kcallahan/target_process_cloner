@@ -8,7 +8,6 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @remote_projects = map_remote_projects_to_local_objects
-    @projects = Project.all
   end
 
   # GET /projects/1

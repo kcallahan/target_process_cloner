@@ -20,15 +20,18 @@ require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do
 
+  valid_remote_id = 1234
+  valid_project_name = "hoopty doopty"
+
   # This should return the minimal set of attributes required to create a valid
   # Project. As you add validations to Project, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {:source_remote_id => valid_remote_id}
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {:source_remote_id => "h4x0r you!"}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -37,10 +40,8 @@ RSpec.describe ProjectsController, type: :controller do
   let(:valid_session) { {} }
 
   describe "GET #index" do
-    it "assigns all projects as @projects" do
-      project = Project.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:projects)).to eq([project])
+    it "lists remote projects from target process as local unsaved projects" do
+      pending
     end
   end
 
@@ -70,6 +71,8 @@ RSpec.describe ProjectsController, type: :controller do
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Project" do
+        TargetProcess::find.stub([id: valid_remote_id, name: valid_project_name])
+
         expect {
           post :create, {:project => valid_attributes}, valid_session
         }.to change(Project, :count).by(1)
@@ -103,14 +106,15 @@ RSpec.describe ProjectsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {:name => @project_name, :cloned_remote_id => 5678}
       }
 
       it "updates the requested project" do
         project = Project.create! valid_attributes
         put :update, {:id => project.to_param, :project => new_attributes}, valid_session
         project.reload
-        skip("Add assertions for updated state")
+        
+        expect(project.name).to eq(@project_name)
       end
 
       it "assigns the requested project as @project" do
