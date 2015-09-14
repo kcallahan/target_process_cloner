@@ -18,9 +18,8 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project = Project.new
-    
     @remote_project = map_remote_project_to_local_object(params[:source_remote_id])
+    @project = Project.new
 
     render :edit
   end
@@ -38,7 +37,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
-        format.html { redirect_to projects_url, notice: 'Project was successfully created.' }
+        format.html { redirect_to projects_url, notice: 'Project was successfully created! Go to Target Process and refresh to see...' }
         format.json { render :index, status: :created, location: @project }
       else
         format.html { render :new }

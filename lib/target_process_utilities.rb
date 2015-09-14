@@ -1,25 +1,31 @@
 
 module TargetProcessUtilities
-  include TargetProcess
 
   def map_remote_projects_to_local_objects
-    TargetProcess::Project.all().each do |project_json|
-      project = map_remote_project_to_local_object(project_json.attributes[:id])
-      remote_projects.push project
+    remote_projects_list = all_remote_projects
+    remote_projects_list.each do |project_json|
+      unless project_json.attributes[:id] > 0
+        local_project = map_remote_project_to_local_object(project_json.attributes[:id])
+        remote_projects_list.push local_project
+      end
     end
+    remote_projects_list 
+  end
 
-    remote_projects 
+  def all_remote_projects
+    TargetProcess::Project.all()
   end
 
   def map_remote_project_to_local_object(project_id)
     remote_project = TargetProcess::Project.find(project_id)
 
-    project = Project.new
-    project.id = remote_project.id
-    project.name = remote_project.name
-    project.owner = remote_project.owner[:id]
+    working_project = Project.new
+    working_project.id = project_id
+    working_project.name = remote_project.name
+    working_project.owner = remote_project.owner[:id]
+    working_project.source_remote_id = project_id
 
-    project
+    working_project
   end
   
   def get_remote_epics_for_project(project_id)
