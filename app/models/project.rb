@@ -1,10 +1,9 @@
 class Project < ActiveRecord::Base
-	include TargetProcess
-  include TargetProcessUtilities
 
   has_many :epics
 
   validates :source_remote_id, numericality: { only_integer: true }
+  validates :source_remote_id, uniqueness: true
 
   before_save :create_remote_project_and_save_id
 

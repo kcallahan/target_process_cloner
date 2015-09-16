@@ -6,8 +6,13 @@ RSpec.describe Project, type: :model do
     # TODO probably better to shove this into a Factory
     @project = Project.new
     @project.name = "Local Project Test"
-    @project.owner = 17
-    @project.source_remote_id = 1611
+    @project.owner = 1
+    @project.source_remote_id = 191
+  end
+
+  after(:context) do
+    # TODO probably better to shove this into a Factory
+    @project.delete
   end
 
   describe "create_remote_project" do
@@ -31,7 +36,7 @@ RSpec.describe Project, type: :model do
 
     it "remote project has correct owner" do
       # TODO abstract this 17 to the Factory
-      expect(@remote_project.owner[:id]).to eq 17
+      expect(@remote_project.owner[:id]).to eq 1
     end
   end
 
