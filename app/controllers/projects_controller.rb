@@ -37,6 +37,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+        @project.clean_up_local_db
         format.html { redirect_to projects_url, notice: 'Project was successfully created! Go to Target Process and refresh to see...' }
         format.json { render :index, status: :created, location: @project }
       else

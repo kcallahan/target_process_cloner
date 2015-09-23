@@ -59,7 +59,7 @@ RSpec.describe Epic, type: :model do
   end
 
   describe "project" do
-    it "returns the local parent project" do
+    it "project is an Project in the system" do
       expect(@epic.project).to be_instance_of(Project)
     end
   end

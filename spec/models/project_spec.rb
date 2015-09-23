@@ -1,6 +1,8 @@
 require 'rails_helper'
 require 'target_process_utilities'
 
+include TargetProcessUtilities
+
 RSpec.describe Project, type: :model do
   before(:context) do
     # TODO probably better to shove this into a Factory
@@ -48,5 +50,4 @@ RSpec.describe Project, type: :model do
       TargetProcess::Project.find(@project.cloned_remote_id).delete
     end
   end
-
 end

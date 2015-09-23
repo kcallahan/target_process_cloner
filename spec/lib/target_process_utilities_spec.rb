@@ -112,7 +112,8 @@ RSpec.describe TargetProcessUtilities, type: :helper do
       @local_project.id = nil
       @local_project.save
 
-      @local_epic = map_remote_epic_to_local_object(192)
+      @remote_epic = TargetProcess::Epic.find(192)
+      @local_epic = map_remote_epic_to_local_object(@local_project, @remote_epic)
     end
 
     after(:context) do
@@ -128,12 +129,12 @@ RSpec.describe TargetProcessUtilities, type: :helper do
       expect(@local_epic.id).to be > 0
     end
 
-    it "has a name attribute" do
-      expect(@local_epic.name.length).to be > 0
+    it "local epic retains remote epic's name" do
+      expect(@local_epic.name).to eq @remote_epic.name
     end
 
-    it "has an owner attribute" do
-      expect(@local_epic.owner).to be > 0
+    it "local epic retains remote epic's owner" do
+      expect(@local_epic.owner).to eq @remote_epic.owner[:id]
     end
 
     it "maps to a source remote project" do
@@ -143,11 +144,26 @@ RSpec.describe TargetProcessUtilities, type: :helper do
     it "maps to a local project" do
       expect(@local_epic.project_id).to be > 0
     end
+
+    it "stores a local copy" do
+      local_epic = Epic.find(@local_epic.id)
+      expect(local_epic).to be_instance_of(Epic)
+    end
   end
 
   describe "map_remote_epics_to_local_objects" do
     before(:context) do
-      @mapped_objects = map_remote_epics_to_local_objects(191)
+      @local_project = map_remote_project_to_local_object(191)
+      @local_project.name = "rspec test"
+      @local_project.id = nil
+      @local_project.save
+
+      @mapped_objects = map_remote_epics_to_local_objects(@local_project)
+    end
+
+    after(:context) do
+      TargetProcess::Project.find(@local_project.cloned_remote_id).delete
+      @local_project.delete
     end
 
     it "returns an array" do
@@ -163,6 +179,11 @@ RSpec.describe TargetProcessUtilities, type: :helper do
 
     it "contains an item that has an id" do
       expect(@mapped_objects.first.id).to be > 0
+    end
+
+    it "stores a local copy of remote epic" do
+      epic = Epic.where(project_id: @local_project.id).first
+      expect(epic).to be_instance_of(Epic)
     end
   end
 

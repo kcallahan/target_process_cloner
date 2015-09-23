@@ -42,7 +42,7 @@ module TargetProcessUtilities
 
 
   def all_remote_epics_for_project(remote_project_id)
-    acid = brew_acid([remote_project_id])
+    acid = brew_acid([remote_project_id])    
     TargetProcess::Epic.all({acid: acid})
   end
   
@@ -50,35 +50,22 @@ module TargetProcessUtilities
     TargetProcess::Epic.find(epic_id)
   end
 
-  def map_remote_epics_to_local_objects(remote_project_id)
-    remote_epics_list = all_remote_epics_for_project(remote_project_id)
+  def map_remote_epics_to_local_objects(project)
+    remote_epics_list = all_remote_epics_for_project(project.source_remote_id)
     remote_epics_list.each do |epic_json|
-      unless epic_json.attributes[:id] > 0
-        local_epic = map_remote_epic_to_local_object(epic_json.attributes[:id])
-        remote_epics_list.push local_epic
+      if epic_json.id > 0 && epic_json.resource_type == "Epic"
+        local_epic = map_remote_epic_to_local_object(project, epic_json)
       end
     end
-    remote_epics_list 
   end
 
-  def map_remote_epic_to_local_object(source_remote_id)
-    remote_epic = retrieve_remote_epic(source_remote_id)
-
-    project = Project.where(source_remote_id: remote_epic.project[:id]).first
-
+  def map_remote_epic_to_local_object(project, remote_epic_json)
     working_epic = Epic.new
     working_epic.project_id = project.id
-    working_epic.name = remote_epic.name
-    working_epic.owner = remote_epic.owner[:id]
-    working_epic.source_remote_id = remote_epic.id
-
+    working_epic.name = remote_epic_json.name
+    working_epic.owner = remote_epic_json.owner[:id]
+    working_epic.source_remote_id = remote_epic_json.id
     working_epic.save
-
-    working_epic
-  end
-
-  def clone_project(remote_project_id)
-    pending "write me"
   end
 
   def brew_acid(ids = [])
