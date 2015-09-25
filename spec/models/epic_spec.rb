@@ -13,6 +13,7 @@ RSpec.describe Epic, type: :model do
     @epic.name = "Local Epic Test"
     @epic.owner = 1
     @epic.source_remote_id = 192
+    @epic.numeric_priority = 400
     @epic.project_id = @project.id
   end
 
@@ -46,6 +47,10 @@ RSpec.describe Epic, type: :model do
     it "remote epic has correct owner" do
       # TODO abstract this 1 to the Factory
       expect(@remote_epic.owner[:id]).to eq 1
+    end
+
+    it "remote epic has correct priority" do
+      expect(@remote_epic.numeric_priority).to eq 400
     end
   end
 

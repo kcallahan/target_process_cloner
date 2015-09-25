@@ -11,12 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150915172402) do
+ActiveRecord::Schema.define(version: 20150924154254) do
 
   create_table "epics", force: :cascade do |t|
     t.string   "name"
     t.integer  "owner"
     t.integer  "project_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "source_remote_id"
+    t.integer  "cloned_remote_id"
+    t.integer  "numeric_priority"
+  end
+
+  create_table "features", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "owner"
+    t.integer  "project_id"
+    t.integer  "epic_id"
+    t.integer  "numeric_priority"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "source_remote_id"
@@ -39,6 +52,31 @@ ActiveRecord::Schema.define(version: 20150915172402) do
     t.datetime "updated_at", null: false
     t.string   "name"
     t.integer  "owner"
+  end
+
+  create_table "target_process_entities", force: :cascade do |t|
+    t.string   "type",             null: false
+    t.string   "name"
+    t.text     "description"
+    t.integer  "source_remote_id"
+    t.float    "numeric_priority"
+    t.integer  "owner"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "cloned_remote_id"
+    t.string   "resource_type"
+  end
+
+  create_table "user_stories", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "owner"
+    t.integer  "project_id"
+    t.integer  "feature_id"
+    t.integer  "numeric_priority"
+    t.integer  "cloned_remote_id"
+    t.integer  "source_remote_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
 end

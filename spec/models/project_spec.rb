@@ -1,53 +1,107 @@
+require 'pry'
+require 'pry-nav'
 require 'rails_helper'
-require 'target_process_utilities'
-
-include TargetProcessUtilities
 
 RSpec.describe Project, type: :model do
   before(:context) do
-    # TODO probably better to shove this into a Factory
-    @project = Project.new
-    @project.name = "Local Project Test"
-    @project.owner = 1
-    @project.source_remote_id = 191
+    @project = FactoryGirl.build(:project)    
   end
 
-  after(:context) do
-    # TODO probably better to shove this into a Factory
-    @project.delete
+  describe "on initialize" do
+    it "has a type" do
+      expect(@project).to respond_to(:type)
+    end
+
+    it "type is not empty" do
+      expect(@project.type.blank?).to be false
+    end
+
+    it "has a resource_type" do
+      expect(@project.resource_type.blank?).to be false
+    end
+
+    it "has a resource_type that matches TargetProcess::Project" do
+      @tp_resource = eval("TargetProcess::#{@project.resource_type}.new")
+      expect(@tp_resource).to be_instance_of(TargetProcess::Project)
+    end
+
+    it "has a name" do
+      expect(@project).to respond_to(:name)
+    end
+
+    it "name is not empty" do
+      expect(@project.name.blank?).to be false      
+    end
+
+    it "has a description" do
+      expect(@project).to respond_to(:description)
+    end
+
+    it "has an owner" do
+      expect(@project).to respond_to(:owner)
+    end
+
+    it "owner is set as a number" do
+      expect(@project.owner).to be > 0
+    end
+
+    it "has a numeric priority" do
+      expect(@project).to respond_to(:numeric_priority)
+    end
+
+    it "has a remote source id" do
+      expect(@project).to respond_to(:source_remote_id)
+    end
+
+    it "has a remote cloned id" do
+      expect(@project).to respond_to(:cloned_remote_id)
+    end
   end
 
-  describe "create_remote_project" do
+  describe "create_remote_entity" do
     before(:context) do
-      @remote_project = @project.create_remote_project
+      @remote_project = @project.create_remote_entity
     end
 
     after(:context) do
       @remote_project.delete
     end
 
-    it "creates and saves a remote Target Process project" do
-      # TODO put this test in a higher-level suite; mock all calls to it
+    it "creates an instance of TargetProcess::Project" do
       expect(@remote_project).to be_instance_of(TargetProcess::Project)
     end
 
-    it "remote project has correct name" do
-      # TODO abstract this string into the Factory
-      expect(@remote_project.name).to eq "Local Project Test"
+    it "maps name" do
+      expect(@remote_project.name).to eq @project.name
     end
 
-    it "remote project has correct owner" do
-      # TODO abstract this 17 to the Factory
-      expect(@remote_project.owner[:id]).to eq 1
+    it "maps owner" do
+      expect(@remote_project.owner[:id]).to eq @project.owner
+    end
+
+    it "maps resource_type" do
+      expect(@remote_project.resource_type).to eq "Project"
+    end
+
+    it "maps numeric priority" do
+      expect(@remote_project.numeric_priority).to eq @project.numeric_priority
+    end
+
+    it "returns an object with an id" do
+      expect(@remote_project.id).to be > 0
     end
   end
 
-  describe "create_remote_project_and_save_id" do
-    it "stores new remote project id as cloned_remote_id" do
-      @project.save
-      expect(@project.cloned_remote_id).to be > 0
-      # TODO once the create is mocked, this can be removed
-      TargetProcess::Project.find(@project.cloned_remote_id).delete
+  describe "create_remote_entity_and_save_id" do
+    before(:context) do
+      @remote_project = @project.create_remote_entity_and_save_id
+    end
+
+    after(:context) do
+      @remote_project.delete
+    end    
+    it "stores the cloned project id" do
+      expect(@project.cloned_remote_id).to eq @remote_project.id
     end
   end
 end

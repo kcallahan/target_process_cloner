@@ -1,11 +1,11 @@
-class Epic < ActiveRecord::Base
+class Epic < TargetProcessEntity
   
-  has_one :project
-
-  validates :source_remote_id, numericality: { only_integer: true }
-  validates :project_id, numericality: { only_integer: true }
+  belongs_to :target_process_entity
+  has_one    :project
+  has_many   :features
 
   before_save :create_remote_epic_and_save_id
+
 
   def create_remote_epic_and_save_id
     remote_epic = create_remote_epic
@@ -18,6 +18,7 @@ class Epic < ActiveRecord::Base
     new_remote_epic.name = self.name
     new_remote_epic.owner = {:id => self.owner}
     new_remote_epic.project = {:id => self.project.cloned_remote_id}
+    new_remote_epic.numeric_priority = self.numeric_priority
     new_remote_epic.save
   end
 
