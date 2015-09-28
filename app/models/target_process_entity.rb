@@ -1,5 +1,5 @@
 require 'target_process_integration_toolkit'
-require 'pry'
+
 class TargetProcessEntity < ActiveRecord::Base
   include TargetProcessIntegrationToolkit
 
@@ -33,7 +33,7 @@ class TargetProcessEntity < ActiveRecord::Base
 
   def map_source_entity_to_self(source_entity = nil)
     source_entity         ||= SourceRemoteEntity.new(self.resource_type, self.source_remote_id)
-        
+
     self.name             = source_entity.name if self.name.blank? # only projects set a name, which needs to be retained
     self.owner            = source_entity.owner[:id]
     self.numeric_priority = source_entity.numeric_priority
