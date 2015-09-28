@@ -1,8 +1,10 @@
+require 'target_process_integration_toolkit'
 require 'pry'
-require 'pry-nav'
+
 class ProjectsController < ApplicationController
-  require 'target_process_utilities'
-  include TargetProcessUtilities
+#  require 'target_process_utilities'
+#  include TargetProcessUtilities
+  include TargetProcessIntegrationToolkit
 
 
   before_action :set_project, only: [:show, :edit, :update, :destroy]
@@ -10,7 +12,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @remote_projects = map_remote_projects_to_local_objects
+    @remote_projects = RemoteEntityCollection.new({:resource_type => 'Project'}) #map_remote_projects_to_local_objects
   end
 
   # GET /projects/new

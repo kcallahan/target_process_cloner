@@ -8,7 +8,7 @@
   </thead>
 
   <tbody>
-    <% @remote_projects.each do |remote_project| %>
+    <% @remote_projects.entities.each do |remote_project| %>
     <tr>
       <td>
         <%= link_to remote_project.name, new_project_path({source_remote_id: remote_project.id}) %>

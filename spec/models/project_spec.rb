@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Project, type: :model do
   before(:context) do
-    @project = FactoryGirl.build(:project)    
+    @project = FactoryGirl.build(:project)
   end
 
   describe "on initialize" do
