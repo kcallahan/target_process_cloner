@@ -1,5 +1,3 @@
-require 'target_process_integration_toolkit'
-require 'pry'
 class TargetProcessEntity < ActiveRecord::Base
   include TargetProcessIntegrationToolkit
 

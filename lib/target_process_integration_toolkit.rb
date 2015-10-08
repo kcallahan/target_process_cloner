@@ -1,6 +1,3 @@
-require 'logger'
-require 'pry'
-
 module TargetProcessIntegrationToolkit
   
   def entity_has_project?(resource_type)

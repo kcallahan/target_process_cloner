@@ -1,5 +1,4 @@
 require 'target_process_integration_toolkit'
-require 'pry'
 
 class Project < TargetProcessEntity
   include TargetProcessIntegrationToolkit
