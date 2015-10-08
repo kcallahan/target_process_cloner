@@ -1,16 +1,23 @@
+require 'logger'
+require 'pry'
+
 module TargetProcessIntegrationToolkit
+  
+  def entity_has_project?(resource_type)
+    return true unless (resource_type.downcase == 'project')
+    false
+  end
 
   class RemoteEntity
-    attr_accessor :id, :project, :resource_type, :name, :description, :owner, :numeric_priority, :remote_entity
+    attr_accessor :id, :project, :epic, :feature, :user_story, :resource_type, :name, :description, :owner, :numeric_priority, :remote_entity
 
-    def has_project?(resource_type)
-      return true unless (resource_type.downcase == 'project' || resource_type.downcase == 'task')
+    def has_project?
+      return true unless (@resource_type.downcase == 'project')
       false
     end
   end
 
   class NewRemoteEntity < RemoteEntity
-
     def initialize(params)
       @resource_type = params[:resource_type]
 
@@ -20,7 +27,9 @@ module TargetProcessIntegrationToolkit
       @remote_entity.description      = params[:description]
       @remote_entity.owner            = params[:owner]
       @remote_entity.numeric_priority = params[:numeric_priority]
-      @remote_entity.project          = params[:project] if has_project? @resource_type
+      @remote_entity.project          = params[:project] unless params[:project].nil?
+      @remote_entity.epic             = params[:epic] unless params[:epic].nil?
+      @remote_entity.feature          = params[:feature] unless params[:feature].nil?      
     end
 
     def save
@@ -39,12 +48,13 @@ module TargetProcessIntegrationToolkit
       @resource_type = @resource_type
 
       @remote_entity        = eval "TargetProcess::#{resource_type}.find(#{id})"
+      self.id               = @remote_entity.id
       self.resource_type    = resource_type
       self.name             = @remote_entity.name
       self.description      = @remote_entity.description
       self.owner            = @remote_entity.owner
       self.numeric_priority = @remote_entity.numeric_priority
-      self.project          = @remote_entity.project if has_project? @resource_type
+      self.project          = @remote_entity.project if has_project?
     end
   end
 
@@ -52,17 +62,16 @@ module TargetProcessIntegrationToolkit
     attr_accessor :resource_type, :acid, :entities
 
     def initialize(args)
-      @resource_type = args[:resource_type]      
-      @acid          = brew_acid(args[:acid_ids]) if needs_acid?
+      @resource_type = args[:resource_type]
+      @acid          = brew_acid(args[:acid_ids]) if needs_acid?      
       @entities      = retrieve_remote_entities
     end
 
     def retrieve_remote_entities
-      acid_string = ", acid: {@acid}" if needs_acid?
-      eval "TargetProcess::#{@resource_type}.all({take: 1000})"
+      acid_string = (needs_acid?) ? ", acid: '#{@acid}'" : ""
+      command = "TargetProcess::#{@resource_type}.all({take: 1000 #{acid_string}})"
+      eval command
     end
-
-    private
     
     def needs_acid?
       return true unless @resource_type.downcase == "project"

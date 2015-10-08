@@ -11,41 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150924154254) do
+ActiveRecord::Schema.define(version: 20151002181530) do
 
   create_table "epics", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "owner"
-    t.integer  "project_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.integer  "source_remote_id"
-    t.integer  "cloned_remote_id"
-    t.integer  "numeric_priority"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "target_process_entity_id"
   end
+
+  add_index "epics", ["target_process_entity_id"], name: "index_epics_on_target_process_entity_id"
 
   create_table "features", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "owner"
-    t.integer  "project_id"
-    t.integer  "epic_id"
-    t.integer  "numeric_priority"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.integer  "source_remote_id"
-    t.integer  "cloned_remote_id"
+    t.integer "epic_id"
+    t.integer "target_process_entity_id"
   end
 
+  add_index "features", ["epic_id"], name: "index_features_on_epic_id"
+  add_index "features", ["target_process_entity_id"], name: "index_features_on_target_process_entity_id"
+
   create_table "projects", force: :cascade do |t|
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.string   "name"
-    t.integer  "source_remote_id"
-    t.integer  "owner"
-    t.integer  "cloned_remote_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "target_process_entity_id"
   end
 
   add_index "projects", ["id"], name: "index_projects_on_id"
+  add_index "projects", ["target_process_entity_id"], name: "index_projects_on_target_process_entity_id"
 
   create_table "remote_projects", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -55,28 +46,34 @@ ActiveRecord::Schema.define(version: 20150924154254) do
   end
 
   create_table "target_process_entities", force: :cascade do |t|
-    t.string   "type",             null: false
+    t.string   "type",                      null: false
     t.string   "name"
     t.text     "description"
     t.integer  "source_remote_id"
     t.float    "numeric_priority"
     t.integer  "owner"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.integer  "cloned_remote_id"
     t.string   "resource_type"
+    t.integer  "target_process_project_id"
+    t.integer  "project_id"
+    t.integer  "epic_id"
+    t.integer  "feature_id"
+    t.integer  "user_story_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_stories", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "owner"
-    t.integer  "project_id"
-    t.integer  "feature_id"
-    t.integer  "numeric_priority"
-    t.integer  "cloned_remote_id"
-    t.integer  "source_remote_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "target_process_entity_id"
   end
+
+  add_index "user_stories", ["target_process_entity_id"], name: "index_user_stories_on_target_process_entity_id"
 
 end

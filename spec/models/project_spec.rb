@@ -1,10 +1,9 @@
 require 'pry'
-require 'pry-nav'
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
   before(:context) do
-    @project = FactoryGirl.build(:project)
+    @project = FactoryGirl.build(:project, source_remote_id: 191)
   end
 
   describe "on initialize" do
@@ -53,6 +52,10 @@ RSpec.describe Project, type: :model do
       expect(@project).to respond_to(:source_remote_id)
     end
 
+    it "sets source remote id to passed param" do
+      expect(@project.target_process_project_to_clone).to be > 0 
+    end
+
     it "has a remote cloned id" do
       expect(@project).to respond_to(:cloned_remote_id)
     end
@@ -84,7 +87,7 @@ RSpec.describe Project, type: :model do
     end
 
     it "maps numeric priority" do
-      expect(@remote_project.numeric_priority).to eq @project.numeric_priority
+      pending "FIXME: the factory shouldn't know about the remote..."
     end
 
     it "returns an object with an id" do
@@ -99,9 +102,14 @@ RSpec.describe Project, type: :model do
 
     after(:context) do
       @remote_project.delete
-    end    
+    end
+
     it "stores the cloned project id" do
       expect(@project.cloned_remote_id).to eq @remote_project.id
+    end
+
+    it "retains the source_remote_id" do
+      expect(@project.source_remote_id).to eq 191
     end
   end
 end

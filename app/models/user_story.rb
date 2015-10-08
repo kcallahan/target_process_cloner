@@ -1,37 +1,34 @@
 class UserStory < TargetProcessEntity
-  has_one :project
-  has_one :feature
 
-  validates :project_id, numericality: { only_integer: true }
-  validates :feature_id, numericality: { only_integer: true }
+  belongs_to :feature
+  belongs_to :project
+  has_many   :tasks
 
-  before_save :create_remote_user_story_and_save_id
-  
-  def initialize
-    self.type = 'user_story'
+  def set_resource_type
+    @resource_type     = "UserStory"
+    self.resource_type = "UserStory"
   end
 
-  def create_remote_user_story_and_save_id
-    remote_user_story = create_remote_user_story
-    self.cloned_remote_id = remote_user_story.id
+  def specific_remote_params
+    params = {:project => {:id => self.project.cloned_remote_id}}
+    params.merge!({:feature => {:id => self.feature.cloned_remote_id}}) unless self.feature.nil?
+    params
   end
 
-  def create_remote_user_story
-    new_remote_user_story = TargetProcess::UserStory.new
-    new_remote_user_story.resource_type = "UserStory"
-    new_remote_user_story.name = self.name
-    new_remote_user_story.owner = {:id => self.owner}
-    new_remote_user_story.project = {:id => self.project.cloned_remote_id}
-    new_remote_user_story.feature = {:id => self.feature.cloned_remote_id}
-    new_remote_user_story.numeric_priority = self.numeric_priority
-    new_remote_user_story.save
+  def clone_remote_child_entities
+    acid_ids = [@@target_process_project_to_clone]
+=begin    
+    @tasks = RemoteEntityCollection.new({:resource_type => 'Task', :acid_ids => acid_ids})
+    @tasks.entities.each do |task|
+      unless task.nil?        
+        local_task = Task.new()
+        local_task.map_source_entity_to_self(task)
+        local_task.user_story = self
+        local_task.save
+        sleep 1
+      end
+    end    
+=end    
   end
 
-  def feature
-    Feature.find(self.feature_id)
-  end
-
-  def project
-    Project.find(self.project_id)
-  end
 end

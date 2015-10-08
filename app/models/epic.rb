@@ -1,7 +1,6 @@
 class Epic < TargetProcessEntity
-  
-  belongs_to :target_process_entity
-  has_one    :project
+
+  belongs_to :project
   has_many   :features
 
   def set_resource_type
@@ -9,7 +8,8 @@ class Epic < TargetProcessEntity
     self.resource_type = "Epic"
   end
 
-  def project
-    Project.find(self.project_id)
+  def specific_remote_params
+    {:project => {:id => self.project.cloned_remote_id}}
   end
+
 end

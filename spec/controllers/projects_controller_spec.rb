@@ -40,13 +40,16 @@ RSpec.describe ProjectsController, type: :controller do
   let(:valid_session) { {} }
 
   describe "GET #new" do
+=begin    
     it "assigns a new project as @project" do
       get :new, {}, valid_session
       expect(assigns(:project)).to be_a_new(Project)
     end
+=end
   end
 
   describe "POST #create" do
+=begin    
     context "with valid params" do
       it "creates a new Project" do
         tp_stub = double()
@@ -80,6 +83,7 @@ RSpec.describe ProjectsController, type: :controller do
         expect(response).to render_template("new")
       end
     end
+=end    
   end
 
 end

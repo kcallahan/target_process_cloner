@@ -35,31 +35,4 @@ RSpec.describe TargetProcessIntegrationToolkit::RemoteEntity do
       expect(@remote_entity).to respond_to(:numeric_priority)
     end
   end
-
-  describe "has_project?" do
-    it "projects do not have projects" do
-      answer = @remote_entity.has_project? "Project"
-      expect(answer).to be false
-    end
-
-    it "user stories do have projects" do
-      answer = @remote_entity.has_project? "UserStory"
-      expect(answer).to be true
-    end
-
-    it "epics do have projects" do
-      answer = @remote_entity.has_project? "Epic"
-      expect(answer).to be true
-    end
-
-    it "features do have projects" do
-      answer = @remote_entity.has_project? "Feature"
-      expect(answer).to be true
-    end
-
-    it "tasks do have projects" do
-      answer = @remote_entity.has_project? "Task"
-      expect(answer).to be false
-    end
-  end
 end
