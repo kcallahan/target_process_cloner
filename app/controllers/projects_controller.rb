@@ -1,12 +1,7 @@
 require 'target_process_integration_toolkit'
 
 class ProjectsController < ApplicationController
-#  require 'target_process_utilities'
-#  include TargetProcessUtilities
   include TargetProcessIntegrationToolkit
-
-
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
@@ -50,4 +45,5 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:project).permit(:name, :source_remote_id)
     end
+    
 end
