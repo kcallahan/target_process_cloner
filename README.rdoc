@@ -1,28 +1,15 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Target Process Cloner is a small app that uses Target Process' REST API to clone a project and all its work entities, while preserving parent:child relationships.
 
-Things you may want to cover:
+I wrote this as a stop gap for a non-programming consulting gig; it does what it needs to though my customer is not interested in a cutting-edge app. It just needs to get the job done.
 
-* Ruby version
+It is very, very, extremely rough around the edges; it's been years since I've written an application. This one gets the job done, though has plenty of questionable design decisions:
 
-* System dependencies
+  * the cloning should probably run in the background, rather than as a blocking operation
 
-* Configuration
+  * tests do not mock the API calls, or use any current approaches such as VCR. They work, though are SLOWWWWWWWW :(
 
-* Database creation
+  * there is some further refactoring that would require more meta-programming than I want to get into
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+There's not much else to say about it!
