@@ -6,10 +6,10 @@ I wrote this as a stop gap for a non-programming consulting gig; it does what it
 
 It is very, very, extremely rough around the edges; it's been years since I've written an application. This one gets the job done, though has plenty of questionable design decisions:
 
-  * the cloning should probably run in the background, rather than as a blocking operation
+* the cloning should probably run in the background, rather than as a blocking operation
 
-  * tests do not mock the API calls, or use any current approaches such as VCR. They work, though are SLOWWWWWWWW :(
+* tests do not mock the API calls, or use any current approaches such as VCR. They work, though are SLOWWWWWWWW :(
 
-  * there is some further refactoring that would require more meta-programming than I want to get into
+* there is some further refactoring that would require more meta-programming than I want to get into
 
 There's not much else to say about it!
