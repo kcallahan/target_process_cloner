@@ -10,8 +10,16 @@ class UserStory < TargetProcessEntity
   end
 
   def specific_remote_params
-    params = {:project => {:id => self.project.cloned_remote_id}}
-    params.merge!({:feature => {:id => self.feature.cloned_remote_id}}) unless self.feature.nil?
+    params = {
+      :project => {
+        :id => self.project.cloned_remote_id
+      }
+    }
+    params.merge!({
+      :feature => {
+        :id => self.feature.cloned_remote_id
+      }
+    }) unless self.feature.nil?
     params
   end
 

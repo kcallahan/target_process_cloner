@@ -9,8 +9,12 @@ class Task < TargetProcessEntity
 
   def specific_remote_params
     {
-      :project => {:id => self.user_story.project.cloned_remote_id}, 
-      :userstory => {:id => self.user_story.cloned_remote_id}
+      :project => {
+        :id => self.user_story.project.cloned_remote_id
+      }, 
+      :userstory => {
+        :id => self.user_story.cloned_remote_id
+      }
     }
   end
 end

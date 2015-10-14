@@ -9,7 +9,11 @@ class Epic < TargetProcessEntity
   end
 
   def specific_remote_params
-    {:project => {:id => self.project.cloned_remote_id}}
+    {
+      :project => {
+        :id => self.project.cloned_remote_id
+      }
+    }
   end
 
 end

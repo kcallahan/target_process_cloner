@@ -10,8 +10,16 @@ class Feature < TargetProcessEntity
   end
 
   def specific_remote_params
-    params = {:project => {:id => self.project.cloned_remote_id}}
-    params.merge!({:epic => {:id => self.epic.cloned_remote_id}}) unless self.epic.nil?
+    params = {
+      :project => {
+        :id => self.project.cloned_remote_id
+      }
+    }
+    params.merge!({
+      :epic => {
+        :id => self.epic.cloned_remote_id
+      }
+    }) unless self.epic.nil?
     params
   end
 end

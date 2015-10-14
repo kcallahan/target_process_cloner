@@ -111,4 +111,5 @@ RSpec.describe Project, type: :model do
       expect(@project.source_remote_id).to eq 191
     end
   end
+
 end
