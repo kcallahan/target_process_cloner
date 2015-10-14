@@ -1,7 +1,10 @@
 <h1>Cloning Project</h1>
 
-<%= "Project to Clone: #{@remote_project.name}" %>
+<h2>Note that after clicking the "clone project" button, it can take a while...</h2>
+<p>...like many minutes, to clone your project! Keep this browser window open and computer on. Go get some coffee. Or check Facebook. Or something.</p>
+<p>When it completes you'll see a list of projects, including the new one!</p>
 
+<%= "Project to Clone: #{@remote_project.name}" %>
 <%= render 'form' %>
 
 <%= link_to 'Show', @project %> |
