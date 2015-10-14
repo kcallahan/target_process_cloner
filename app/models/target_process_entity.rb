@@ -28,6 +28,7 @@ class TargetProcessEntity < ActiveRecord::Base
   end
 
   def map_source_entity_to_self(source_entity = nil)
+    #TODO: There are several places where this type of mapping occurs; clean it up through a dynamic mapper
     source_entity         ||= SourceRemoteEntity.new(self.resource_type, self.source_remote_id) 
     self.name             = source_entity.name unless @resource_type == "Project"
     self.owner            = source_entity.owner[:id]
@@ -43,6 +44,7 @@ class TargetProcessEntity < ActiveRecord::Base
   end  
 
   def initialize_new_remote_entity
+    #TODO: There are several places where this type of mapping occurs; clean it up through a dynamic mapper
     params = {
       :resource_type    => @resource_type,
       :name             => self.name,

@@ -17,18 +17,18 @@ class UserStory < TargetProcessEntity
 
   def clone_remote_child_entities
     acid_ids = [@@target_process_project_to_clone]
-=begin    
-    @tasks = RemoteEntityCollection.new({:resource_type => 'Task', :acid_ids => acid_ids})
-    @tasks.entities.each do |task|
+
+    remote_self = TargetProcess::UserStory.find(self.source_remote_id)
+    @tasks = remote_self.nested_tasks
+    @tasks.each do |task|
       unless task.nil?        
         local_task = Task.new()
         local_task.map_source_entity_to_self(task)
         local_task.user_story = self
         local_task.save
-        sleep 1
+        sleep 2
       end
     end    
-=end    
   end
 
 end

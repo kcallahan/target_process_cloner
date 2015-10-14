@@ -1,3 +1,4 @@
+require 'target_process_integration_toolkit'
 require 'rails_helper'
 
 RSpec.describe UserStory, type: :model do
@@ -34,7 +35,7 @@ RSpec.describe UserStory, type: :model do
     end
 
     it "does not set the feature parameter if one is not set" do
-#      expect(@user_story.specific_remote_params[:feature][:id]).to eq nil
+      expect(@user_story.specific_remote_params[:feature][:id]).to eq nil
     end
   end
 end

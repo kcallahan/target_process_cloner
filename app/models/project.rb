@@ -27,7 +27,8 @@ class Project < TargetProcessEntity
 
   def clone_remote_child_entities    
     acid_ids = [@@target_process_project_to_clone]
-
+    
+    #TODO DRY this out; way too much duplication!
     @epics = RemoteEntityCollection.new({:resource_type => 'Epic', :acid_ids => acid_ids})
     @epics.entities.each do |epic|
       unless epic.nil?

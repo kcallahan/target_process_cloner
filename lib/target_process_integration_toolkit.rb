@@ -18,6 +18,7 @@ module TargetProcessIntegrationToolkit
     def initialize(params)
       @resource_type = params[:resource_type]
 
+      #TODO: There are several places where this type of mapping occurs; clean it up through a dynamic mapper
       @remote_entity                  = new_target_process_entity
       @remote_entity.resource_type    = @resource_type
       @remote_entity.name             = params[:name]
@@ -26,7 +27,8 @@ module TargetProcessIntegrationToolkit
       @remote_entity.numeric_priority = params[:numeric_priority]
       @remote_entity.project          = params[:project] unless params[:project].nil?
       @remote_entity.epic             = params[:epic] unless params[:epic].nil?
-      @remote_entity.feature          = params[:feature] unless params[:feature].nil?      
+      @remote_entity.feature          = params[:feature] unless params[:feature].nil?
+      @remote_entity.userstory        = params[:userstory] unless params[:userstory].nil?
     end
 
     def save
@@ -44,6 +46,7 @@ module TargetProcessIntegrationToolkit
     def initialize(resource_type, id)
       @resource_type = @resource_type
 
+      #TODO: There are several places where this type of mapping occurs; clean it up through a dynamic mapper
       @remote_entity        = eval "TargetProcess::#{resource_type}.find(#{id})"
       self.id               = @remote_entity.id
       self.resource_type    = resource_type
