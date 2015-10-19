@@ -3,6 +3,8 @@ require 'target_process_integration_toolkit'
 class ProjectsController < ApplicationController
   include TargetProcessIntegrationToolkit
 
+  before_filter :require_session
+
   # GET /projects
   # GET /projects.json
   def index

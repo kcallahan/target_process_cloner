@@ -1,0 +1,32 @@
+Please enter your Target Process information. Your information is not permenantly stored; the application keeps it temporarily only. It is suggested to change your password on Target Process after using the tool.
+
+<style type="text/css">
+  #target_process_credentials label {
+    width: 100px;
+    display: inline-block;
+  }
+
+  #target_process_credentials input.text {
+    width: 200px;
+    display: inline-block;
+  }
+</style>
+
+<form action="/sessions" method="post" id="target_process_credentials">
+  <p>
+    <label>Login</label>
+    <input type="text" class="text" name="target_process[login]" />
+  </p>
+  <p>
+    <label>Password</label>
+    <input type="text" class="text" name="target_process[password]" />
+  </p>
+  <p>
+    <label>URL</label> 
+    <input type="text" class="text" name="target_process[url]" /> (ex: https://something.tpondemand.com)
+  </p>
+  <p>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <input type="submit" />
+  </p>
+</form>
