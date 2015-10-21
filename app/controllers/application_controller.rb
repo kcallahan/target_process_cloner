@@ -1,5 +1,5 @@
 require 'target_process'
-require 'pry'
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -13,6 +13,12 @@ class ApplicationController < ActionController::Base
     return false if session[:target_process_login].nil?
     return false if session[:target_process_password].nil?
     return false if session[:target_process_url].nil?
+
+    TargetProcess.configure do |config|
+      config.api_url  = session[:target_process_url] + "/api/v1/"
+      config.username = session[:target_process_login]
+      config.password = session[:target_process_password]
+    end
     true
   end
 end

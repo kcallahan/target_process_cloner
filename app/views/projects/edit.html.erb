@@ -9,3 +9,10 @@
 
 <%= link_to 'Show', @project %> |
 <%= link_to 'Back', projects_path %>
+
+<script type="text/javascript">
+  $('#new_project').submit(function() {
+    $('#new_project').hide();
+    $('#cloning_message').show();
+  });
+</script>

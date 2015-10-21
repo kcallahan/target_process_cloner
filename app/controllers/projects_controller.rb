@@ -13,8 +13,9 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @remote_project = TargetProcess::Project.find(params[:source_remote_id])
-    @project = Project.new({:source_remote_id => params[:source_remote_id]})
+    store_source_remote_id params[:source_remote_id] if session[:source_remote_id].nil?
+    @remote_project = TargetProcess::Project.find(session[:source_remote_id])
+    @project = Project.new({:source_remote_id => session[:source_remote_id]})
 
     render :edit
   end
@@ -22,8 +23,12 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @remote_project = TargetProcess::Project.find(params[:source_remote_id])
+    @remote_project = TargetProcess::Project.find(session[:source_remote_id])
     @project = Project.new(project_params)
+
+    if params[:project][:name].blank?
+      redirect_to new_project_url, notice: "Project name cannot be blank"
+    end
 
     respond_to do |format|
       if @project.save
@@ -34,13 +39,17 @@ class ProjectsController < ApplicationController
         format.html { render :new }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
-    end
+    end 
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
+    end
+
+    def store_source_remote_id(source_remote_id)
+      session[:source_remote_id] = source_remote_id
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

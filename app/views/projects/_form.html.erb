@@ -1,3 +1,4 @@
+<p id="error_explanation"><%= notice %></p>
 <%= form_for(@project) do |f| %>
   <% if @project.errors.any? %>
     <div id="error_explanation">
@@ -16,6 +17,10 @@
   <%= hidden_field :project, :source_remote_id, :value => @remote_project.id %>
 
   <div class="actions">
-    <%= f.submit "Clone Project" %>
+    <%= f.submit "Clone Project", id: "submit_clone_project" %>
   </div>
 <% end %>
+
+<div id="cloning_message" style="display: none; padding: 10px; font-size: 14pt; font-color: green;">
+  Cloning project...please do not close or refresh this window!
+</div>
