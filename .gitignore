@@ -21,3 +21,7 @@
 
 # Ignore self
 /.gitignore
+
+# Ignore capistrano
+/Capfile
+/config/deploy/
