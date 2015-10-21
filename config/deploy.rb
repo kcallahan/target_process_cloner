@@ -2,7 +2,8 @@
 lock '3.4.0'
 
 set :application, 'target_process_cloner'
-set :repo_url, 'kcallahan@github.com:/kcallahan/target_process_cloner.git'
+set :repo_url,    'https://github.com/kcallahan/target_process_cloner'
+set :branch,      'master'
 
 set :tmp_dir, "/home/tp_cloner/tmp"
 
@@ -10,7 +11,7 @@ set :tmp_dir, "/home/tp_cloner/tmp"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-# set :deploy_to, '/var/www/my_app_name'
+ set :deploy_to, '/targetprocessprojectcloner.com'
 
 # Default value for :scm is :git
 # set :scm, :git
